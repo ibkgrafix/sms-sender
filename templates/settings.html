@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block heading %}Settings{% endblock %}
+{% block content %}
+<form method="post" action="/settings">
+  <section class="card">
+    <div class="card-h"><h2>Provider</h2></div>
+    <div class="card-b">
+      <div class="field">
+        <label>Active provider</label>
+        <select name="provider">
+          {% for key, label in providers %}
+          <option value="{{ key }}" {{ 'selected' if key == active }}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="field">
+        <label>Delay between messages (seconds)</label>
+        <input type="number" name="delay" step="0.05" min="0" max="5" value="{{ delay }}">
+        <p class="hint">0.25 is safe for most providers. Raise it if the carrier starts throttling.</p>
+      </div>
+      <button class="btn btn-p" type="submit">Save</button>
+    </div>
+  </section>
+</form>
+
+<section class="card" style="margin-top:20px">
+  <div class="card-h"><h2>API keys</h2></div>
+  <div class="card-b">
+    {% for k, ok in keys.items() %}
+    <div class="kv"><span class="k mono">{{ k }}</span>
+      <span class="v"><span class="badge {{ 'ok' if ok else 'err' }}"><i class="dot"></i>{{ 'set' if ok else 'missing' }}</span></span></div>
+    {% endfor %}
+    <p class="hint" style="margin-top:12px">Keys live in <code>.env</code>. Restart the server after editing.</p>
+  </div>
+</section>
+{% endblock %}

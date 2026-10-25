@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block heading %}History<span class="sub">{{ rows|length }} recent</span>{% endblock %}
+{% block content %}
+<section class="card">
+  <div class="card-h"><h2>Sent messages</h2></div>
+  <div class="scroll">
+    <table class="tbl">
+      <thead><tr><th>When</th><th>Number</th><th>Status</th><th>Provider</th><th>Detail</th></tr></thead>
+      <tbody>
+      {% for r in rows %}
+        <tr><td class="num">{{ r.ts }}</td><td class="num">{{ r.phone }}</td>
+            <td><span class="badge {{ 'err' if r.status == 'failed' else 'ok' }}"><i class="dot"></i>{{ r.status }}</span></td>
+            <td>{{ r.provider }}</td><td class="detail" title="{{ r.detail }}">{{ r.detail }}</td></tr>
+      {% else %}
+        <tr><td colspan="5" class="empty">No messages sent yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}
